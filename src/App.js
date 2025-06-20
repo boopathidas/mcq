@@ -2,82 +2,95 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 const questions = [
-  {
-    question: 'Which finger is used to press the spacebar?',
-    options: ['Thumb', 'Index finger', 'Little finger', 'Ring finger'],
-    answer: 0,
-  },
-  {
-    question: 'What is the correct posture for typing?',
-    options: ['Slouching', 'Sitting upright', 'Lying down', 'Standing'],
-    answer: 1,
-  },
-  {
-    question: 'Notepad is mainly used for:',
-    options: ['Editing images', 'Writing and editing plain text', 'Creating presentations', 'Calculating numbers'],
-    answer: 1,
-  },
-  {
-    question: 'Which tab in MS Word is used to change the font style?',
-    options: ['Home', 'Insert', 'Design', 'View'],
-    answer: 0,
-  },
-  {
-    question: 'To insert a picture in Word, you use the:',
-    options: ['Home tab', 'Insert tab', 'Design tab', 'Layout tab'],
-    answer: 1,
-  },
-  {
-    question: "The 'Themes' option is found under which tab in Word?",
-    options: ['Home', 'Insert', 'Design', 'References'],
-    answer: 2,
-  },
-  {
-    question: 'Which formula is used to add numbers in Excel?',
-    options: ['=SUM()', '=MIN()', '=MAX()', '=AVG()'],
-    answer: 0,
-  },
-  {
-    question: 'To find the smallest value in a range, use:',
-    options: ['=SUM()', '=MIN()', '=MAX()', '=CONCATENATE()'],
-    answer: 1,
-  },
-  {
-    question: 'Which function combines text from multiple cells?',
-    options: ['=SUM()', '=MIN()', '=CONCATENATE()', '=MAX()'],
-    answer: 2,
-  },
-  {
-    question: "The 'Insert' tab in Excel is used to:",
-    options: ['Change font', 'Insert charts and tables', 'Calculate formulas', 'Sort data'],
-    answer: 1,
-  },
-  {
-    question: 'Which tab is used to add new slides in PowerPoint?',
-    options: ['Home', 'Insert', 'Design', 'Animations'],
-    answer: 0,
-  },
-  {
-    question: 'To apply a design template, use the:',
-    options: ['Home tab', 'Insert tab', 'Design tab', 'Transitions tab'],
-    answer: 2,
-  },
-  {
-    question: 'Which tab is used to add animations to objects?',
-    options: ['Home', 'Insert', 'Design', 'Animations'],
-    answer: 3,
-  },
-  {
-    question: "The 'Transitions' tab is used for:",
-    options: ['Adding effects between slides', 'Editing text', 'Inserting images', 'Changing font'],
-    answer: 0,
-  },
-  {
-    question: 'To send an email, you need:',
-    options: ["Only the recipient's address", "Recipient's address and subject", "Recipient's address, subject, and message", 'Only the subject'],
-    answer: 2,
-  },
-];
+  // Typing
+  { question: "Which finger is used to press the spacebar?", options: ['Thumb', 'Index finger', 'Little finger', 'Ring finger'], answer: 0 },
+  { question: "What is the correct posture for typing?", options: ['Slouching', 'Sitting upright', 'Lying down', 'Standing'], answer: 1 },
+  { question: "Which key is used to start a new line in typing?", options: ['Spacebar', 'Enter', 'Shift', 'Tab'], answer: 1 },
+  { question: "What is the function of the Caps Lock key?", options: ['Deletes text', 'Types in capital letters', 'Moves cursor', 'Saves file'], answer: 1 },
+  { question: "Which hand is used for the letter 'A' on a QWERTY keyboard?", options: ['Left', 'Right', 'Both', 'None'], answer: 0 },
+  { question: "What does WPM stand for in typing?", options: ['Words Per Minute', 'Windows Per Monitor', 'Write Per Month', 'Words Per Memory'], answer: 0 },
+  { question: "Which key is used to erase the character to the left of the cursor?", options: ['Delete', 'Backspace', 'Tab', 'Shift'], answer: 1 },
+  { question: "Which key is used to insert a tab space?", options: ['Tab', 'Shift', 'Ctrl', 'Alt'], answer: 0 },
+  { question: "Which finger is used for the letter 'J' in touch typing?", options: ['Left index', 'Right index', 'Left pinky', 'Right pinky'], answer: 1 },
+  { question: "What is the home row in typing?", options: ['Top row', 'Middle row', 'Bottom row', 'Number row'], answer: 1 },
+  // Notepad
+  { question: "Notepad is mainly used for:", options: ['Editing images', 'Writing and editing plain text', 'Creating presentations', 'Calculating numbers'], answer: 1 },
+  { question: "Which menu is used to save a file in Notepad?", options: ['Edit', 'File', 'Format', 'View'], answer: 1 },
+  { question: "What is the default file extension for Notepad?", options: ['.docx', '.txt', '.pptx', '.xlsx'], answer: 1 },
+  { question: "Which shortcut saves a file in Notepad?", options: ['Ctrl+S', 'Ctrl+P', 'Ctrl+N', 'Ctrl+O'], answer: 0 },
+  { question: "Which menu is used to change the font in Notepad?", options: ['File', 'Edit', 'Format', 'Help'], answer: 2 },
+  // Word
+  { question: "Which tab in MS Word is used to change the font style?", options: ['Home', 'Insert', 'Design', 'View'], answer: 0 },
+  { question: "To insert a picture in Word, you use the:", options: ['Home tab', 'Insert tab', 'Design tab', 'Layout tab'], answer: 1 },
+  { question: "The 'Themes' option is found under which tab in Word?", options: ['Home', 'Insert', 'Design', 'References'], answer: 2 },
+  { question: "Which shortcut is used to copy text in Word?", options: ['Ctrl+V', 'Ctrl+C', 'Ctrl+X', 'Ctrl+Z'], answer: 1 },
+  { question: "Which shortcut is used to paste text in Word?", options: ['Ctrl+V', 'Ctrl+C', 'Ctrl+X', 'Ctrl+Z'], answer: 0 },
+  { question: "Which tab is used to add a table in Word?", options: ['Home', 'Insert', 'Design', 'Layout'], answer: 1 },
+  { question: "Which tab is used to add page numbers in Word?", options: ['Insert', 'Design', 'Layout', 'References'], answer: 0 },
+  { question: "Which tab is used to change document margins in Word?", options: ['Layout', 'Insert', 'Design', 'Home'], answer: 0 },
+  { question: "Which tab is used to add a header or footer in Word?", options: ['Insert', 'Design', 'Layout', 'References'], answer: 0 },
+  { question: "Which tab is used to apply a watermark in Word?", options: ['Design', 'Insert', 'Layout', 'References'], answer: 0 },
+  { question: "Which shortcut is used to undo in Word?", options: ['Ctrl+Y', 'Ctrl+Z', 'Ctrl+U', 'Ctrl+X'], answer: 1 },
+  // Excel
+  { question: "Which formula is used to add numbers in Excel?", options: ['=SUM()', '=MIN()', '=MAX()', '=AVG()'], answer: 0 },
+  { question: "To find the smallest value in a range, use:", options: ['=SUM()', '=MIN()', '=MAX()', '=CONCATENATE()'], answer: 1 },
+  { question: "Which function combines text from multiple cells?", options: ['=SUM()', '=MIN()', '=CONCATENATE()', '=MAX()'], answer: 2 },
+  { question: "The 'Insert' tab in Excel is used to:", options: ['Change font', 'Insert charts and tables', 'Calculate formulas', 'Sort data'], answer: 1 },
+  { question: "Which tab is used to sort and filter data in Excel?", options: ['Data', 'Insert', 'Home', 'Formulas'], answer: 0 },
+  { question: "Which formula finds the average in Excel?", options: ['=SUM()', '=MIN()', '=MAX()', '=AVERAGE()'], answer: 3 },
+  { question: "Which formula finds the largest value in Excel?", options: ['=SUM()', '=MIN()', '=MAX()', '=CONCATENATE()'], answer: 2 },
+  { question: "Which tab is used to format cells in Excel?", options: ['Home', 'Insert', 'Data', 'Review'], answer: 0 },
+  { question: "Which tab is used to insert a chart in Excel?", options: ['Insert', 'Home', 'Data', 'Formulas'], answer: 0 },
+  { question: "Which tab is used to freeze panes in Excel?", options: ['View', 'Insert', 'Data', 'Home'], answer: 0 },
+  { question: "Which shortcut saves a file in Excel?", options: ['Ctrl+S', 'Ctrl+P', 'Ctrl+N', 'Ctrl+O'], answer: 0 },
+  { question: "Which shortcut is used to cut in Excel?", options: ['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Ctrl+Z'], answer: 0 },
+  { question: "Which shortcut is used to copy in Excel?", options: ['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Ctrl+Z'], answer: 1 },
+  { question: "Which shortcut is used to paste in Excel?", options: ['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Ctrl+Z'], answer: 2 },
+  // PowerPoint
+  { question: "Which tab is used to add new slides in PowerPoint?", options: ['Home', 'Insert', 'Design', 'Animations'], answer: 0 },
+  { question: "To apply a design template, use the:", options: ['Home tab', 'Insert tab', 'Design tab', 'Transitions tab'], answer: 2 },
+  { question: "Which tab is used to add animations to objects?", options: ['Home', 'Insert', 'Design', 'Animations'], answer: 3 },
+  { question: "The 'Transitions' tab is used for:", options: ['Adding effects between slides', 'Editing text', 'Inserting images', 'Changing font'], answer: 0 },
+  { question: "Which tab is used to insert pictures in PowerPoint?", options: ['Insert', 'Home', 'Design', 'Animations'], answer: 0 },
+  { question: "Which tab is used to add SmartArt in PowerPoint?", options: ['Insert', 'Home', 'Design', 'Animations'], answer: 0 },
+  { question: "Which tab is used to add a chart in PowerPoint?", options: ['Insert', 'Home', 'Design', 'Animations'], answer: 0 },
+  { question: "Which tab is used to change slide layout in PowerPoint?", options: ['Home', 'Insert', 'Design', 'Animations'], answer: 0 },
+  { question: "Which shortcut starts a slideshow from the beginning?", options: ['F5', 'F2', 'F7', 'F9'], answer: 0 },
+  { question: "Which shortcut moves to the next slide in slideshow?", options: ['Spacebar', 'Enter', 'Right Arrow', 'All of these'], answer: 3 },
+  // Email
+  { question: "To send an email, you need:", options: ["Only the recipient's address", "Recipient's address and subject", "Recipient's address, subject, and message", 'Only the subject'], answer: 2 },
+  { question: "Which field is used to send a copy of an email to someone else?", options: ['To', 'CC', 'BCC', 'Subject'], answer: 1 },
+  { question: "Which field hides the recipient's email address from others?", options: ['To', 'CC', 'BCC', 'Subject'], answer: 2 },
+  { question: "What is the purpose of the Subject field in an email?", options: ['Recipient address', 'Message content', 'Title of the email', 'Attachment'], answer: 2 },
+  { question: "Which button is used to send the email?", options: ['Send', 'Reply', 'Forward', 'Delete'], answer: 0 },
+  { question: "Which button is used to reply to an email?", options: ['Send', 'Reply', 'Forward', 'Delete'], answer: 1 },
+  { question: "Which button is used to forward an email?", options: ['Send', 'Reply', 'Forward', 'Delete'], answer: 2 },
+  { question: "Which button is used to remove an email?", options: ['Send', 'Reply', 'Forward', 'Delete'], answer: 3 },
+  { question: "What is an attachment in an email?", options: ['A file sent with the email', 'A reply', 'A subject', 'A recipient'], answer: 0 },
+  { question: "Which symbol is used for email addresses?", options: ['#', '@', '$', '%'], answer: 1 },
+  // General Computer
+  { question: "What does CPU stand for?", options: ['Central Processing Unit', 'Computer Personal Unit', 'Central Print Unit', 'Control Processing Unit'], answer: 0 },
+  { question: "What does RAM stand for?", options: ['Read Access Memory', 'Random Access Memory', 'Run Access Memory', 'Read And Memory'], answer: 1 },
+  { question: "What is the main function of a mouse?", options: ['Typing', 'Pointing and clicking', 'Printing', 'Scanning'], answer: 1 },
+  { question: "What is the main function of a keyboard?", options: ['Typing', 'Printing', 'Scanning', 'Drawing'], answer: 0 },
+  { question: "Which device is used to print documents?", options: ['Monitor', 'Printer', 'Scanner', 'Keyboard'], answer: 1 },
+  { question: "Which device is used to scan documents?", options: ['Monitor', 'Printer', 'Scanner', 'Keyboard'], answer: 2 },
+  { question: "Which device displays the output?", options: ['Monitor', 'Printer', 'Scanner', 'Keyboard'], answer: 0 },
+  { question: "Which device is used to store data permanently?", options: ['RAM', 'Hard Disk', 'CPU', 'Monitor'], answer: 1 },
+  { question: "Which device is used to store data temporarily?", options: ['RAM', 'Hard Disk', 'CPU', 'Monitor'], answer: 0 },
+  { question: "Which is an example of an input device?", options: ['Monitor', 'Printer', 'Keyboard', 'Speaker'], answer: 2 },
+  { question: "Which is an example of an output device?", options: ['Monitor', 'Keyboard', 'Mouse', 'Scanner'], answer: 0 },
+  { question: "Which software is used to browse the internet?", options: ['MS Word', 'MS Excel', 'Web Browser', 'MS PowerPoint'], answer: 2 },
+  { question: "Which is an example of an operating system?", options: ['Windows', 'MS Word', 'MS Excel', 'Printer'], answer: 0 },
+  { question: "Which is an example of application software?", options: ['Windows', 'MS Word', 'CPU', 'RAM'], answer: 1 },
+  { question: "What is the full form of USB?", options: ['Universal Serial Bus', 'United Serial Bus', 'Universal System Bus', 'United System Bus'], answer: 0 },
+  { question: "What is the full form of WWW?", options: ['World Wide Web', 'World Web Wide', 'Web World Wide', 'Wide World Web'], answer: 0 },
+  { question: "What is the full form of URL?", options: ['Uniform Resource Locator', 'Uniform Resource Link', 'Universal Resource Locator', 'Universal Resource Link'], answer: 0 },
+  { question: "Which key is used to refresh a webpage?", options: ['F5', 'F2', 'F7', 'F9'], answer: 0 },
+  { question: "Which key is used to select all text?", options: ['Ctrl+A', 'Ctrl+C', 'Ctrl+V', 'Ctrl+S'], answer: 0 },
+  { question: "Which key is used to print a document?", options: ['Ctrl+P', 'Ctrl+S', 'Ctrl+V', 'Ctrl+X'], answer: 0 },
+  { question: "Which key is used to open a new window in a browser?", options: ['Ctrl+N', 'Ctrl+O', 'Ctrl+S', 'Ctrl+P'], answer: 0 },
+].slice(0, 50);
 
 function App() {
   const [step, setStep] = useState('login');
@@ -234,7 +247,7 @@ function App() {
               </div>
               {currentQ === questions.length - 1 && (
                 <div style={{ marginBottom: 18 }}>
-                  <div style={{ fontWeight: 500, marginBottom: 6 }}>16. Write the steps to send an email using any email service.</div>
+                  <div style={{ fontWeight: 500, marginBottom: 6 }}> Write the steps to send an email using any email service.</div>
                   <textarea
                     value={assignment}
                     onChange={e => setAssignment(e.target.value)}
@@ -287,7 +300,7 @@ function App() {
               ))}
             </div>
             <div style={{ marginBottom: 18 }}>
-              <div style={{ fontWeight: 500, marginBottom: 6 }}>16. Your answer for the assignment:</div>
+              <div style={{ fontWeight: 500, marginBottom: 6 }}> Your answer for the assignment:</div>
               <div style={{ background: '#f7f7fa', padding: 10, borderRadius: 6 }}>{assignment}</div>
             </div>
             <button onClick={() => setShowReview(false)} style={{ width: '100%', padding: 10, borderRadius: 4, background: '#1976d2', color: '#fff', border: 'none', fontWeight: 'bold' }}>Back to Score</button>
