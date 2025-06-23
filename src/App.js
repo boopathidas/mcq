@@ -101,6 +101,7 @@ function App() {
   const [step, setStep] = useState('login');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [answers, setAnswers] = useState([]);
   const [assignment, setAssignment] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -152,8 +153,33 @@ function App() {
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, [step]);
 
+  const getGreeting = (score, total) => {
+    const percent = (score / total) * 100;
+    if (percent === 100) return 'Outstanding! You got a perfect score! 🌟';
+    if (percent >= 90) return 'Excellent work! You really know your stuff! 🎉';
+    if (percent >= 75) return 'Great job! Keep it up! 👍';
+    if (percent >= 50) return 'Good effort! Keep practicing and you will improve! 💪';
+    return "Don't give up! Review the material and try again! 😊";
+  };
+
+  const handlePhoneChange = (e) => {
+    // Only allow numbers
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    setPhone(value);
+    if (value.length > 10) {
+      setPhoneError('Phone number must be exactly 10 digits');
+    } else {
+      setPhoneError('');
+    }
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
+    if (!/^\d{10}$/.test(phone)) {
+      setPhoneError('Please enter a valid 10-digit phone number');
+      return;
+    }
+    setPhoneError('');
     if (name.trim() && phone.trim()) {
       const selected = getRandomQuestions(questions, 15);
       setQuizQuestions(selected);
@@ -207,7 +233,8 @@ function App() {
             </div>
             <div style={{ marginBottom: 24 }}>
               <label>Phone Number:</label><br />
-              <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }} required />
+              <input type="tel" value={phone} onChange={handlePhoneChange} maxLength={10} style={{ width: '100%', padding: 8, borderRadius: 4, border: phoneError ? '1px solid #e53935' : '1px solid #ccc' }} required />
+              {phoneError && <div style={{ color: '#e53935', fontSize: 13, marginTop: 4 }}>{phoneError}</div>}
             </div>
             <button type="submit" style={{ width: '100%', padding: 10, borderRadius: 4, background: '#1976d2', color: '#fff', border: 'none', fontWeight: 'bold' }}>Login</button>
           </form>
@@ -280,6 +307,16 @@ function App() {
             <h2 style={{ marginBottom: 16 }}>Thank you, {name}!</h2>
             <p>Your responses have been submitted.</p>
             <p style={{ fontWeight: 500, margin: '16px 0' }}>Your Score: {score} / {quizQuestions.length}</p>
+            <div style={{
+              background: '#f4f6fb',
+              color: '#1976d2',
+              fontWeight: 'bold',
+              borderRadius: 8,
+              padding: '12px 16px',
+              margin: '12px 0',
+              textAlign: 'center',
+              fontSize: 17
+            }}>{getGreeting(score, quizQuestions.length)}</div>
             <button onClick={() => setShowReview(true)} style={{ width: '100%', padding: 10, borderRadius: 4, background: '#1976d2', color: '#fff', border: 'none', fontWeight: 'bold', marginTop: 12 }}>View Questions</button>
           </div>
         )}
