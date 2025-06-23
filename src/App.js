@@ -92,11 +92,16 @@ const questions = [
   { question: "Which key is used to open a new window in a browser?", options: ['Ctrl+N', 'Ctrl+O', 'Ctrl+S', 'Ctrl+P'], answer: 0 },
 ].slice(0, 50);
 
+function getRandomQuestions(arr, n) {
+  const shuffled = arr.slice().sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, n);
+}
+
 function App() {
   const [step, setStep] = useState('login');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [answers, setAnswers] = useState(Array(questions.length).fill(null));
+  const [answers, setAnswers] = useState([]);
   const [assignment, setAssignment] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [currentQ, setCurrentQ] = useState(0);
@@ -106,6 +111,7 @@ function App() {
   const [cameraActive, setCameraActive] = useState(false);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
+  const [quizQuestions, setQuizQuestions] = useState([]);
 
   // Camera access on quiz start
   useEffect(() => {
@@ -149,7 +155,13 @@ function App() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (name.trim() && phone.trim()) {
+      const selected = getRandomQuestions(questions, 15);
+      setQuizQuestions(selected);
+      setAnswers(Array(15).fill(null));
       setStep('quiz');
+      setCurrentQ(0);
+      setAssignment('');
+      setSubmitted(false);
     }
   };
 
@@ -161,7 +173,7 @@ function App() {
   };
 
   const handleNext = () => {
-    if (currentQ < questions.length - 1) setCurrentQ(currentQ + 1);
+    if (currentQ < quizQuestions.length - 1) setCurrentQ(currentQ + 1);
   };
 
   const handlePrev = () => {
@@ -180,7 +192,7 @@ function App() {
   };
 
   const score = answers.reduce((acc, ans, idx) =>
-    ans === questions[idx].answer ? acc + 1 : acc, 0
+    quizQuestions[idx] && ans === quizQuestions[idx].answer ? acc + 1 : acc, 0
   );
 
   return (
@@ -200,7 +212,7 @@ function App() {
             <button type="submit" style={{ width: '100%', padding: 10, borderRadius: 4, background: '#1976d2', color: '#fff', border: 'none', fontWeight: 'bold' }}>Login</button>
           </form>
         )}
-        {step === 'quiz' && (
+        {step === 'quiz' && quizQuestions.length > 0 && (
           <>
             <div className="camera-box">
               <video ref={videoRef} autoPlay playsInline width={120} height={90} style={{ borderRadius: 8, background: '#000' }} />
@@ -217,9 +229,9 @@ function App() {
             <form onSubmit={handleSubmit} style={{ opacity: quizPaused ? 0.3 : 1, pointerEvents: quizPaused ? 'none' : 'auto' }}>
               <h2 style={{ marginBottom: 16 }}>MCQ Assignment</h2>
               <div className="question-block">
-                <div className="question">{currentQ + 1}. {questions[currentQ].question}</div>
+                <div className="question">{currentQ + 1}. {quizQuestions[currentQ].question}</div>
                 <div className="option-cards">
-                  {questions[currentQ].options.map((opt, oidx) => (
+                  {quizQuestions[currentQ].options.map((opt, oidx) => (
                     <div
                       key={oidx}
                       className={`option-card${answers[currentQ] === oidx ? ' selected' : ''}`}
@@ -241,11 +253,11 @@ function App() {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 18 }}>
                 <button type="button" onClick={handlePrev} disabled={currentQ === 0} style={{ padding: '8px 16px', borderRadius: 4, background: '#eee', border: 'none', color: '#333', fontWeight: 'bold', cursor: currentQ === 0 ? 'not-allowed' : 'pointer' }}>Previous</button>
-                {currentQ < questions.length - 1 ? (
+                {currentQ < quizQuestions.length - 1 ? (
                   <button type="button" onClick={handleNext} disabled={answers[currentQ] === null} style={{ padding: '8px 16px', borderRadius: 4, background: '#1976d2', color: '#fff', border: 'none', fontWeight: 'bold', cursor: answers[currentQ] === null ? 'not-allowed' : 'pointer' }}>Next</button>
                 ) : null}
               </div>
-              {currentQ === questions.length - 1 && (
+              {currentQ === quizQuestions.length - 1 && (
                 <div style={{ marginBottom: 18 }}>
                   <div style={{ fontWeight: 500, marginBottom: 6 }}> Write the steps to send an email using any email service.</div>
                   <textarea
@@ -257,7 +269,7 @@ function App() {
                   />
                 </div>
               )}
-              {currentQ === questions.length - 1 && (
+              {currentQ === quizQuestions.length - 1 && (
                 <button type="submit" style={{ width: '100%', padding: 10, borderRadius: 4, background: '#388e3c', color: '#fff', border: 'none', fontWeight: 'bold' }}>Submit</button>
               )}
             </form>
@@ -267,7 +279,7 @@ function App() {
           <div>
             <h2 style={{ marginBottom: 16 }}>Thank you, {name}!</h2>
             <p>Your responses have been submitted.</p>
-            <p style={{ fontWeight: 500, margin: '16px 0' }}>Your Score: {score} / {questions.length}</p>
+            <p style={{ fontWeight: 500, margin: '16px 0' }}>Your Score: {score} / {quizQuestions.length}</p>
             <button onClick={() => setShowReview(true)} style={{ width: '100%', padding: 10, borderRadius: 4, background: '#1976d2', color: '#fff', border: 'none', fontWeight: 'bold', marginTop: 12 }}>View Questions</button>
           </div>
         )}
@@ -275,7 +287,7 @@ function App() {
           <div>
             <h2 style={{ marginBottom: 16 }}>Review Answers</h2>
             <div style={{ maxHeight: 300, overflowY: 'auto', marginBottom: 16 }}>
-              {questions.map((q, idx) => (
+              {quizQuestions.map((q, idx) => (
                 <div key={idx} style={{ marginBottom: 14, padding: 10, borderRadius: 6, background: '#f7f7fa' }}>
                   <div style={{ fontWeight: 500 }}>{idx + 1}. {q.question}</div>
                   {q.options.map((opt, oidx) => {
